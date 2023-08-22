@@ -16,5 +16,12 @@ fn main() {
         }
 
         let mut parser = Parser::new(input);
+        match parser.parse() {
+            Ok(_) => {}
+            Err(error) => {
+                println!("failed to parse input: {}", error);
+                break;
+            }
+        }
     }
 }
