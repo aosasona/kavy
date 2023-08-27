@@ -3,13 +3,13 @@
 /*
 Example usage:
 
-SET key, value
+SET key = value
 GET key
 DEL key
 FLUSH
 */
 
-use crate::query::Token;
+use super::Token;
 
 pub struct Lexer {
     input: Vec<u8>,
@@ -66,7 +66,7 @@ impl Lexer {
             b'=' => Token::Equals,
             b';' => Token::SemiColon,
             0 => Token::EOF,
-            _ => Token::Illegal,
+            _ => Token::Illegal(self.char),
         };
 
         self.read_char();

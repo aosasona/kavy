@@ -18,7 +18,7 @@ pub enum Token {
     AnyIdentifier, // this is a special token that matches any identifier, used for the parser
 
     Identifier(String),
-    Illegal,
+    Illegal(u8),
     EOF,
 }
 
@@ -44,7 +44,9 @@ impl Display for Token {
             Token::Identifier(value) => {
                 return write!(f, "{}", value);
             }
-            Token::Illegal => "ILLEGAL",
+            Token::Illegal(value) => {
+                return write!(f, "{}", value);
+            }
             Token::EOF => "EOF",
         };
         write!(f, "{}", token)
@@ -62,7 +64,7 @@ impl Token {
             Token::SemiColon => ";".to_string(),
             Token::AnyIdentifier => "ANY_IDENTIFIER".to_string(),
             Token::Identifier(value) => value.to_string(),
-            Token::Illegal => "ILLEGAL".to_string(),
+            Token::Illegal(value) => format!("{}", *value as char),
             Token::EOF => "EOF".to_string(),
         }
     }
@@ -77,7 +79,7 @@ impl Token {
             Token::SemiColon => ";".to_string(),
             Token::AnyIdentifier => "IDENTIFIER".to_string(),
             Token::Identifier(_) => "IDENTIFIER".to_string(),
-            Token::Illegal => "ILLEGAL".to_string(),
+            Token::Illegal(_) => "ILLEGAL".to_string(),
             Token::EOF => "EOF".to_string(),
         }
     }

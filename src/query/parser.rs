@@ -1,4 +1,4 @@
-use crate::query::{
+use super::{
     token::Token,
     Lexer, Syntax, {Command, Op},
 };
@@ -37,8 +37,10 @@ impl Parser {
 
         let syntax = get_syntax(&op);
 
-        // check that the query is valid
-        self.is_valid_query(&tokens, &syntax)?;
+        // check that the query ends with a semicolon
+        if tokens[tokens.len() - 1] != Token::SemiColon {
+            return Err("expected a semicolon at the end of the query".to_string());
+        }
 
         let mut cmd = Command::new(op);
 
@@ -50,7 +52,7 @@ impl Parser {
                 && !(*expected_token == Token::AnyIdentifier && token.is_identifier())
             {
                 return Err(format!(
-                    "expected a {}, but got {}",
+                    "expected `{}`, but got `{}`",
                     expected_token.name(),
                     token.to_string()
                 ));
@@ -78,20 +80,6 @@ impl Parser {
         self.is_valid_command(&cmd)?;
 
         Ok(cmd)
-    }
-
-    fn is_valid_query(&self, tokens: &Vec<Token>, syntax: &Syntax) -> Result<(), String> {
-        // check that the query ends with a semicolon
-        if tokens[tokens.len() - 1] != Token::SemiColon {
-            return Err("expected a semicolon at the end of the query".to_string());
-        }
-
-        // check that the query has the correct number of tokens
-        if tokens.len() != syntax.expected_tokens_pattern.len() {
-            return Err(format!("unexpected end of query!"));
-        }
-
-        Ok(())
     }
 
     fn is_valid_command(&self, cmd: &Command) -> Result<(), String> {

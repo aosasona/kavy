@@ -1,4 +1,4 @@
-use crate::query::Token;
+use super::Token;
 
 #[derive(PartialEq, Debug)]
 pub enum Op {
