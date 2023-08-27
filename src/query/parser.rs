@@ -1,7 +1,6 @@
-use crate::query::lexer::Lexer;
 use crate::query::{
-    command::{Command, Op},
     token::Token,
+    Lexer, {Command, Op},
 };
 
 pub struct Parser {

@@ -9,7 +9,7 @@ DEL key
 FLUSH
 */
 
-use crate::query::token::Token;
+use crate::query::Token;
 
 pub struct Lexer {
     input: Vec<u8>,

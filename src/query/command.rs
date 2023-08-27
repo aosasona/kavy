@@ -1,4 +1,4 @@
-use crate::query::token::Token;
+use crate::query::Token;
 
 pub enum Op {
     Set,

@@ -1,6 +1,6 @@
 mod query;
 
-use query::parser::Parser;
+use query::Parser;
 use std::io::{self, Write};
 
 fn main() {
