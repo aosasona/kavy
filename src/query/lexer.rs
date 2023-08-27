@@ -38,7 +38,7 @@ impl Lexer {
         loop {
             let token = self.next_token();
 
-            if token == Token::EOF || token == Token::Illegal {
+            if token == Token::EOF {
                 break;
             }
 
