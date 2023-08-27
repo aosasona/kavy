@@ -44,7 +44,7 @@ impl Store {
                 if num > 0 {
                     num
                 } else {
-                    return Err("n must be greater than 0".to_string());
+                    return Err(String::from("number of partitions must be greater than 0"));
                 }
             }
             None => 1,
