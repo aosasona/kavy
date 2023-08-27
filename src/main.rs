@@ -4,7 +4,7 @@ use query::Parser;
 use std::io::{self, Write};
 
 fn main() {
-    println!("Welcome to KavyDB! Type in your commands below.");
+    println!("Welcome to KavyDB! All your data are belong to us!");
     loop {
         let mut input = String::new();
 
@@ -25,7 +25,9 @@ fn main() {
 
         let mut parser = Parser::new(input);
         match parser.parse() {
-            Ok(_) => {}
+            Ok(e) => {
+                println!("{:?}", e);
+            }
             Err(error) => {
                 println!("\x1b[31mParser error: {}\x1b[0m", error);
             }

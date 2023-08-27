@@ -50,3 +50,35 @@ impl Display for Token {
         write!(f, "{}", token)
     }
 }
+
+impl Token {
+    pub fn to_string(&self) -> String {
+        match self {
+            Token::Set => "SET".to_string(),
+            Token::Get => "GET".to_string(),
+            Token::Del => "DEL".to_string(),
+            Token::Flush => "FLUSH".to_string(),
+            Token::Equals => "=".to_string(),
+            Token::SemiColon => ";".to_string(),
+            Token::AnyIdentifier => "ANY_IDENTIFIER".to_string(),
+            Token::Identifier(value) => value.to_string(),
+            Token::Illegal => "ILLEGAL".to_string(),
+            Token::EOF => "EOF".to_string(),
+        }
+    }
+
+    pub fn name(&self) -> String {
+        match self {
+            Token::Set => "SET".to_string(),
+            Token::Get => "GET".to_string(),
+            Token::Del => "DEL".to_string(),
+            Token::Flush => "FLUSH".to_string(),
+            Token::Equals => "=".to_string(),
+            Token::SemiColon => ";".to_string(),
+            Token::AnyIdentifier => "IDENTIFIER".to_string(),
+            Token::Identifier(_) => "IDENTIFIER".to_string(),
+            Token::Illegal => "ILLEGAL".to_string(),
+            Token::EOF => "EOF".to_string(),
+        }
+    }
+}
