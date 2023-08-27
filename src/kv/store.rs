@@ -1,5 +1,11 @@
+use std::collections::HashMap;
+
 struct Partition {
     pub data: HashMap<String, String>,
+}
+
+pub struct Opts {
+    pub num_partitions: Option<usize>,
 }
 
 pub struct Store {
@@ -32,9 +38,15 @@ impl Partition {
 }
 
 impl Store {
-    pub fn new(n: Option<usize>) -> Store {
-        let num_partitions = match n {
-            Some(num) => num,
+    pub fn new(opts: Opts) -> Result<Store, String> {
+        let num_partitions = match opts.num_partitions {
+            Some(num) => {
+                if num > 0 {
+                    num
+                } else {
+                    return Err("n must be greater than 0".to_string());
+                }
+            }
             None => 1,
         };
 
@@ -43,9 +55,9 @@ impl Store {
             partitions.push(Partition::new());
         }
 
-        Store {
+        Ok(Store {
             partitions,
             num_partitions,
-        }
+        })
     }
 }
