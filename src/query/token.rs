@@ -14,7 +14,9 @@ pub enum Token {
     Equals,
     SemiColon,
 
+    #[allow(dead_code)]
     AnyIdentifier, // this is a special token that matches any identifier, used for the parser
+
     Identifier(String),
     Illegal,
     EOF,
@@ -40,7 +42,7 @@ impl Display for Token {
             Token::SemiColon => ";",
             Token::AnyIdentifier => "ANY_IDENTIFIER",
             Token::Identifier(value) => {
-                return write!(f, "IDENTIFIER({})", value);
+                return write!(f, "{}", value);
             }
             Token::Illegal => "ILLEGAL",
             Token::EOF => "EOF",

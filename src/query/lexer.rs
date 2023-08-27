@@ -6,7 +6,7 @@ Example usage:
 SET key, value
 GET key
 DEL key
-CLEAR ALL
+FLUSH
 */
 
 use crate::query::token::Token;
@@ -19,9 +19,9 @@ pub struct Lexer {
 }
 
 impl Lexer {
-    pub fn new(input: String) -> Lexer {
+    pub fn new(input: Vec<u8>) -> Lexer {
         let mut lexer = Lexer {
-            input: input.into_bytes(),
+            input,
             char: 0,
             current_position: 0,
             read_position: 0,
