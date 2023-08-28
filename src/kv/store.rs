@@ -1,4 +1,6 @@
+use std::collections::hash_map::DefaultHasher;
 use std::collections::HashMap;
+use std::hash::{Hash, Hasher};
 
 struct Partition {
     pub data: HashMap<String, String>,
@@ -59,5 +61,33 @@ impl Store {
             partitions,
             num_partitions,
         })
+    }
+
+    // this is used to determine which partition to use to store or retrieve a key
+    fn hash(&self, key: &str) -> usize {
+        let mut hasher = DefaultHasher::new();
+        key.hash(&mut hasher);
+        hasher.finish() as usize % self.num_partitions
+    }
+
+    pub fn set(&mut self, key: String, value: String) {
+        let partition = self.hash(&key);
+        self.partitions[partition].set(key, value);
+    }
+
+    pub fn get(&self, key: String) -> Option<&String> {
+        let partition = self.hash(&key);
+        self.partitions[partition].get(key)
+    }
+
+    pub fn del(&mut self, key: String) {
+        let partition = self.hash(&key);
+        self.partitions[partition].del(key);
+    }
+
+    pub fn flush(&mut self) {
+        for partition in &mut self.partitions {
+            partition.flush();
+        }
     }
 }

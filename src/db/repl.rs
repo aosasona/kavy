@@ -24,12 +24,17 @@ pub fn run_repl(_: &Args, engine: &Engine) {
         }
 
         let mut parser = Parser::new(input);
-        let _ = match parser.parse() {
+        let cmd = match parser.parse() {
             Ok(cmd) => cmd,
             Err(error) => {
                 println!("\x1b[31mParser error: {}\x1b[0m", error);
                 continue;
             }
         };
+
+        match engine.execute(&cmd) {
+            Ok(response) => println!("{}", response),
+            Err(error) => println!("\x1b[31mExecution error: {}\x1b[0m", error),
+        }
     }
 }
