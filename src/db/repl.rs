@@ -1,8 +1,8 @@
-use crate::{args::Args, kv::Store, query::Parser};
+use crate::{args::Args, kv::Engine, query::Parser};
 
 use std::io::{self, Write};
 
-pub fn run_repl(_: &Args, store: &Store) {
+pub fn run_repl(_: &Args, engine: &Engine) {
     println!("Welcome to KavyDB! All your data are belong to us!");
 
     loop {
