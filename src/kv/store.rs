@@ -1,6 +1,7 @@
 use std::collections::hash_map::DefaultHasher;
 use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
+use std::sync::Mutex;
 
 struct Partition {
     pub data: HashMap<String, String>,
@@ -30,8 +31,8 @@ impl Partition {
         self.data.get(&key)
     }
 
-    pub fn del(&mut self, key: String) {
-        self.data.remove(&key);
+    pub fn del(&mut self, key: &String) {
+        self.data.remove(key);
     }
 
     pub fn flush(&mut self) {
@@ -40,7 +41,7 @@ impl Partition {
 }
 
 impl Store {
-    pub fn new(opts: Opts) -> Result<Store, String> {
+    pub fn new(opts: Opts) -> Result<Mutex<Store>, String> {
         let num_partitions = match opts.num_partitions {
             Some(num) => {
                 if num > 0 {
@@ -57,10 +58,10 @@ impl Store {
             partitions.push(Partition::new());
         }
 
-        Ok(Store {
+        Ok(Mutex::new(Store {
             partitions,
             num_partitions,
-        })
+        }))
     }
 
     // this is used to determine which partition to use to store or retrieve a key
@@ -70,19 +71,28 @@ impl Store {
         hasher.finish() as usize % self.num_partitions
     }
 
-    pub fn set(&mut self, key: String, value: String) {
+    pub fn set(&mut self, key: String, value: String) -> Result<String, String> {
         let partition = self.hash(&key);
-        self.partitions[partition].set(key, value);
+        self.partitions[partition].set(key.clone(), value);
+        Ok(key)
     }
 
-    pub fn get(&self, key: String) -> Option<&String> {
-        let partition = self.hash(&key);
-        self.partitions[partition].get(key)
+    pub fn get(&self, key: &String) -> Result<String, String> {
+        let partition = self.hash(key);
+        match self.partitions[partition].get(key.clone()) {
+            Some(value) => Ok(value.clone()),
+            None => Ok(String::from("")),
+        }
     }
 
-    pub fn del(&mut self, key: String) {
+    pub fn del(&mut self, key: &String) -> Result<String, String> {
+        if self.get(key)?.is_empty() {
+            return Err(String::from(format!("key `{}` not found", key)));
+        }
+
         let partition = self.hash(&key);
         self.partitions[partition].del(key);
+        Ok(key.clone())
     }
 
     pub fn flush(&mut self) {

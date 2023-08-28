@@ -21,7 +21,7 @@ fn main() {
         }
     };
 
-    let engine = kv::Engine::new(store.clone());
+    let engine = kv::Engine::new(store);
     if args.repl {
         db::run_repl(&args, &engine);
     } else {

@@ -24,5 +24,7 @@ Probably not, this is mostly to learn Rust
 
 ## Might add
 
-- [ ] WAL journal to reconstruct in-memory storage on startup
+- [ ] WAL journal (and on-disk persistence with a .kavy file)
+- [ ] Realtime events
+- [ ] A "bucket" abstraction
 - [ ] HTTP server (why not?)

@@ -1,6 +1,6 @@
 use super::{
     token::Token,
-    Lexer, Syntax, {Command, Op},
+    Lexer, {Command, Op},
 };
 
 use super::{get_syntax, Identifier};

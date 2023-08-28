@@ -31,10 +31,9 @@ pub fn run_repl(_: &Args, engine: &Engine) {
                 continue;
             }
         };
-
         match engine.execute(&cmd) {
-            Ok(response) => println!("{}", response),
-            Err(error) => println!("\x1b[31mExecution error: {}\x1b[0m", error),
+            Ok(res) => println!("\x1b[32m{}\x1b[0m", res),
+            Err(error) => println!("\x1b[31m{}\x1b[0m", error),
         }
     }
 }
